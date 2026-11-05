@@ -1,15 +1,3 @@
-# Changelog / Änderungsprotokoll
-
-## v0.5.4-L — Abschluss der Community-Praxistests (2026-11-05)
-
-- **Bestätigt durch Anwenderbericht:** Neuinstallation, Upgrade/Bestandsinstallation, LibreSpeed-Auswertung, manuelle GUI-Messung, Serverauswahl und automatischer Cronjob funktionieren.
-- **Bestätigt durch Terminalprotokoll:** `pkg delete os-speedtest-csv-reporting` entfernt 0.5.4-L erfolgreich; ein eindeutig paketverwalteter GUI-Cronjob wird entfernt.
-- **Nicht als geprüft gewertet:** tatsächlicher Erhalt historischer Messdateien nach Deinstallation, GUI-ACL für alle Rollen, simultaner echter Cron-/GUI-Aufruf sowie andere OPNsense-Versionen.
-- **Veröffentlichung:** Code und paketierte Messroutine bleiben unverändert; aktualisiert wurden nur Dokumentation, Prüfliste und Release Notes. GitHub-Publikation und Maintainer-Angaben stehen aus.
-- Siehe `TEST_REPORT_DE_EN.md` und `RELEASE_CHECKLIST.md`.
-
----
-
 ## 0.5.4-L (2026-11-05)
 - OPNsense reporting page: manual "Messung jetzt starten" button using persisted server selection.
 - Asynchronous, root-owned background worker with polling status (running/success/failure); no changes to GUI Cron schedule.
@@ -75,3 +63,9 @@
 - Pin identity of the measurement binary before executing the LibreSpeed speed test; record version, SHA-256, OS version and result URL in a separate CSV.
 - Mock-based new CLI install and failure tests; offline CI checks; MIT license; full German and English README.
 - Not yet confirmed on real OPNsense 26.7.8_2. Do not publish as stable before VM smoke tests.
+
+### Release-build correction (2026-11-05)
+- Set package metadata to unofficial project, maintainer `geraldFS`, repository `https://github.com/geraldFS/os-speedtest-librespeed`.
+- Standalone `.pkg` now downloads and SHA-256-verifies the official LibreSpeed CLI on fresh installs, using a direct download inside the pre-install hook without recursion into `pkg`.
+- The all-in-one `install.sh` continues to provide its already-tested bootstrap path.
+- Existing LibreSpeed CLI and user CSV data are preserved. The new pkg-only bootstrap has not been validated on a real OPNsense device yet.

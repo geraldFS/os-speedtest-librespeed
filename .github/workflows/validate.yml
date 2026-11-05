@@ -1,0 +1,21 @@
+name: Validate source
+on:
+  push:
+  pull_request:
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up syntax checking tools
+        run: sudo apt-get update && sudo apt-get install -y php-cli zstd
+      - name: Syntax and package integrity checks
+        run: |
+          python3 build_pkg.py
+          python3 tests/check.py
+          python3 tests/test_measure_libre.py
+          python3 tests/test_server_selection.py
+          sudo python3 tests/test_manual_run.py
+          python3 tests/test_cron_integration.py
+          php tests/test_cron_policy.php
+          php tests/test_csv_download.php

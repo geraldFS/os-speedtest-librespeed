@@ -1,0 +1,34 @@
+<acl>
+    <page-user-csvspeedtest-dashboard>
+        <name>Speedtest: Messwerte lesen</name>
+        <description>Zugriff auf Verlauf, Tabellenansicht und originalen CSV-Download</description>
+        <patterns>
+            <pattern>ui/csvspeedtest/*</pattern>
+            <pattern>api/csvspeedtest/history/data</pattern>
+            <pattern>api/csvspeedtest/history/table</pattern>
+            <pattern>api/csvspeedtest/history/download</pattern>
+            <pattern>api/csvspeedtest/history/info</pattern>
+            <pattern>api/csvspeedtest/history/serverlist</pattern>
+            <pattern>api/csvspeedtest/history/settings</pattern>
+            <pattern>api/csvspeedtest/history/provenance</pattern>
+            <pattern>api/csvspeedtest/history/manualstatus</pattern>
+        </patterns>
+    </page-user-csvspeedtest-dashboard>
+    <page-user-csvspeedtest-settings>
+        <name>Speedtest: Messserver konfigurieren</name>
+        <description>Serverauswahl und Messparameter bearbeiten (nur Volladministratoren)</description>
+        <patterns><pattern>api/csvspeedtest/history/savesettings</pattern></patterns>
+    </page-user-csvspeedtest-settings>
+    <page-user-csvspeedtest-run>
+        <name>Speedtest: Manuelle Messung starten</name>
+        <description>Erlaubt einen manuellen Speedtest nur mit Administratorrechten</description>
+        <patterns><pattern>api/csvspeedtest/history/manualstart</pattern></patterns>
+    </page-user-csvspeedtest-run>
+    <page-user-csvspeedtest-clear>
+        <name>Speedtest: Messdaten leeren</name>
+        <description>Zusaetzliche Freigabe fuer das Leeren; erfordert zudem page-all</description>
+        <patterns>
+            <pattern>api/csvspeedtest/history/clear</pattern>
+        </patterns>
+    </page-user-csvspeedtest-clear>
+</acl>

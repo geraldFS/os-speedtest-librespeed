@@ -1,0 +1,7 @@
+# Build output belongs in GitHub releases, not in the source tree
+/dist/*.pkg
+/dist/*.tar
+__pycache__/
+*.pyc
+*.log
+.DS_Store

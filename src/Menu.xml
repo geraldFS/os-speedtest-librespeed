@@ -1,0 +1,5 @@
+<menu>
+    <Reporting>
+        <Speedtest VisibleName="Speedtest" url="/ui/csvspeedtest" cssClass="fa fa-tachometer fa-fw"/>
+    </Reporting>
+</menu>

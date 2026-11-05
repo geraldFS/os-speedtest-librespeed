@@ -1,0 +1,11 @@
+<metadata>
+    <csvspeedtest>
+        <filename>SpeedtestCsv.js</filename>
+        <endpoints>
+            <endpoint>/api/csvspeedtest/history/data</endpoint>
+        </endpoints>
+        <translations>
+            <title>Speedtest-Verlauf (CSV)</title>
+        </translations>
+    </csvspeedtest>
+</metadata>

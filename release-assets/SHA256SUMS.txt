@@ -1,0 +1,3 @@
+6fd87de8d1b21589296349b16178df0d45178795468cc0b0ebe249e959553d8d  os-speedtest_0.5.4-L.pkg
+845a15178f7c5fb257afdf8ebf65aece1e26a3da4a7f2c68ab0f7e778dd3d3fa  os-speedtest_0.5.4-L.tar.gz
+818ac8dcb7a7b79942a82e0e19653e786ee324e57aa48803cde36b4a9278a7af  os-speedtest_0.5.4-L-source.zip

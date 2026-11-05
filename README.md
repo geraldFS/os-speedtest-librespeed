@@ -14,7 +14,7 @@
 
 **UI-Hotfix 0.5.4-L:** Entfernt alte kompilierte OPNsense-Volt-Vorlagen nach dem Update und stellt sicher, dass Tabellenüberschriften und Datenspalten immer übereinstimmen (sechs LibreSpeed-Spalten). Außerdem wird die CLI-Version nur in der ersten Zeile angezeigt.
 
-**Teststand (0.5.4-L):** Die LibreSpeed-Messaktion aus 0.5.1-L wurde am 5.11.2026 auf OPNsense 26.7.8_2 mit `configctl csvspeedtest run` erfolgreich gestartet und im Screenshot waren Messwerte sichtbar. Die Installation und GUI-Anzeige von 0.5.4-L sind noch nicht auf dem realen Gerät bestätigt.
+**Teststand (0.5.4-L):** Die LibreSpeed-Messaktion aus 0.5.1-L wurde am 5.11.2026 auf OPNsense 26.7.8_2 mit `configctl csvspeedtest run` erfolgreich gestartet und im Screenshot waren Messwerte sichtbar. Neuinstallation, Bestandsinstallation, manuelle Messungen, Serverauswahl, Cron und Auswertung wurden vom Anwender auf OPNsense als funktionsfähig bestätigt; die neue automatische CLI-Installation durch das Einzelpaket ist noch nicht auf dem Gerät geprüft.
 
 ### Neu: manuelle Messung über die Berichtsseite
 
@@ -41,7 +41,7 @@ cd os-speedtest_0.5.4-L
 sh install.sh
 ```
 
-**Version 0.5.0-L oder 0.5.1-L nicht vorher deinstallieren.** Der Installer prüft die vorhandene LibreSpeed-CLI und führt ein Paketupdate durch. Das einzelne `.pkg` setzt ein vorhandenes LibreSpeed CLI voraus und wird mit `pkg add ./os-speedtest_0.5.4-L.pkg` installiert.
+**Version 0.5.0-L oder 0.5.1-L nicht vorher deinstallieren.** Der Installer prüft die vorhandene LibreSpeed-CLI und führt ein Paketupdate durch. Das einzelne `.pkg` prüft LibreSpeed und installiert die offizielle LibreSpeed CLI 1.0.14 bei Bedarf über HTTPS mit fester SHA-256-Prüfsumme. Dafür sind DNS/Internetverbindung auf OPNsense nötig. Installation: `pkg add ./os-speedtest_0.5.4-L.pkg`.
 
 ### Prüfung und Fehlerdiagnose
 
@@ -74,7 +74,7 @@ Die ausführliche [deutsche Installationsanleitung](docs/INSTALLATION_DE.md) bes
 
 ### Lizenz
 
-Der eigene Plugin-Code steht unter [MIT](LICENSE). Das separat bezogene [LibreSpeed CLI](https://github.com/librespeed/speedtest-cli) ist LGPL-3.0-lizenziert und wird hier nicht weiterverteilt. Das Paket ist ein nicht signiertes Community-Paket. Die unveränderte, in der Praxis getestete Paketdatei enthält noch Maintainer-Platzhalter. Ein Paketupdate mit korrigierten Metadaten ist vorgesehen.
+Der eigene Plugin-Code steht unter [MIT](LICENSE). Das separat bezogene [LibreSpeed CLI](https://github.com/librespeed/speedtest-cli) ist LGPL-3.0-lizenziert und wird hier nicht weiterverteilt. Das Paket ist ein nicht signiertes Community-Paket. Maintainer: [geraldFS](https://github.com/geraldFS/os-speedtest-librespeed).
 
 ---
 
@@ -88,7 +88,7 @@ Der eigene Plugin-Code steht unter [MIT](LICENSE). Das separat bezogene [LibreSp
 
 **UI hotfix 0.5.4-L:** Remove stale compiled OPNsense Volt templates after upgrading and render the six LibreSpeed table headers directly from the current field layout. The CLI version display is limited to the first line.
 
-**Validation:** The 0.5.1-L LibreSpeed action was successfully run on OPNsense 26.7.8_2 on November 5, 2026, and the user supplied a screenshot showing values. Installation and rendered UI behavior of 0.5.4-L have not yet been verified on the live firewall.
+**Validation:** The 0.5.1-L LibreSpeed action was successfully run on OPNsense 26.7.8_2 on November 5, 2026, and the user supplied a screenshot showing values. The user has confirmed installation, reporting, manual measurement, server selection and Cron operation; the new CLI bootstrap from a standalone pkg has not yet been tested on the real firewall.
 
 ### Manual measurement from the WebGUI
 
@@ -113,7 +113,7 @@ cd os-speedtest_0.5.4-L
 sh install.sh
 ```
 
-**Do not uninstall 0.5.0-L or 0.5.1-L first.** The installer checks LibreSpeed and upgrades the installed package. The standalone `.pkg` requires an already installed LibreSpeed CLI and can be installed with `pkg add ./os-speedtest_0.5.4-L.pkg`.
+**Do not uninstall 0.5.0-L or 0.5.1-L first.** The installer checks LibreSpeed and upgrades the installed package. The standalone `.pkg` verifies or automatically fetches the official LibreSpeed CLI v1.0.14 using a pinned SHA-256 checksum. Internet/DNS access is required on first installation: `pkg add ./os-speedtest_0.5.4-L.pkg`.
 
 ### Verify / troubleshoot
 
@@ -133,7 +133,7 @@ If the run still reports `Error (1)`, inspect `librespeed-error.log`; do not rep
 pkg delete os-speedtest-csv-reporting
 ```
 
-Logs and the separately installed LibreSpeed CLI are retained. Plugin code is [MIT licensed](LICENSE). The upstream [LibreSpeed CLI](https://github.com/librespeed/speedtest-cli) is licensed under LGPL-3.0, and is not bundled. This is an unsigned community package; the previously field-tested package still contains maintainer placeholders; correcting package metadata requires rebuilding and revalidation.
+Logs and the separately installed LibreSpeed CLI are retained. Plugin code is [MIT licensed](LICENSE). The upstream [LibreSpeed CLI](https://github.com/librespeed/speedtest-cli) is licensed under LGPL-3.0, and is not bundled. This is an unsigned community package; maintained by [geraldFS](https://github.com/geraldFS/os-speedtest-librespeed).
 
 See the complete [English installation instructions](docs/INSTALLATION_EN.md).
 
@@ -165,3 +165,13 @@ The list is fetched on request, and selections are strictly validated.
 
 **Important:** The new config JSON is user data, not part of the package manifest;
 therefore the package manager does not delete it during routine upgrades.
+
+
+### Neuinstallation allein über die .pkg / Standalone pkg bootstrap
+
+Das Paket prüft zunächst, ob `/usr/local/bin/librespeed-cli` installiert ist. Fehlt es, lädt der `+PRE_INSTALL`-Hook die FreeBSD-amd64-CLI v1.0.14 vom offiziellen [LibreSpeed-Release](https://github.com/librespeed/speedtest-cli/releases/tag/v1.0.14), prüft den archivierten SHA-256-Wert und richtet das ausführbare Programm ein. **Die Firewall benötigt DNS und Internetzugriff auf GitHub; ohne diesen Zugriff wird der Paketinstallationsvorgang mit Fehlermeldung abgebrochen.** Es findet kein rekursiver Aufruf der Paketverwaltung statt. Messdaten werden nicht gelöscht.
+
+The standalone pkg now performs an SHA-256-pinned upstream CLI bootstrap in `+PRE_INSTALL` when needed; it requires Internet/DNS access and does not recursively call pkg.
+
+
+**Downloads:** Nach Veröffentlichung sind die unveränderten SHA-256-geprüften Artefakte unter [GitHub Releases](https://github.com/geraldFS/os-speedtest-librespeed/releases/tag/v0.5.4-L) erhältlich. Die Release-Automatisierung prüft die Dateien vor dem Upload.
